@@ -16,7 +16,7 @@ defusedxml==0.7.1
 distro==1.9.0
 dotenv==0.9.9
 duckduckgo_search==8.1.1
-faiss-cpu==1.11.0.post1
+faiss-cpu
 frozenlist==1.7.0
 gitdb==4.0.12
 GitPython==3.1.45
@@ -35,6 +35,10 @@ langchain==0.3.27
 langchain-community==0.3.27
 langchain-core==0.3.74
 langchain-openai==0.3.29
+langchain-groq
+langchain-huggingface
+sentence-transformers
+pypdf
 langchain-text-splitters==0.3.9
 langgraph==0.6.4
 langgraph-checkpoint==2.1.1
@@ -63,7 +67,6 @@ pydantic==2.11.7
 pydantic-settings==2.10.1
 pydantic_core==2.33.2
 pydeck==0.9.1
-pypdf==6.0.0
 python-dateutil==2.9.0.post0
 python-dotenv==1.1.1
 pytz==2025.2
@@ -90,6 +93,8 @@ typing_extensions==4.14.1
 tzdata==2025.2
 urllib3==2.5.0
 xxhash==3.5.0
-yarl==1.20.1
 youtube-transcript-api==0.6.2
 zstandard==0.23.0
+pypdf
+langchain-huggingface
+faiss-cpu
