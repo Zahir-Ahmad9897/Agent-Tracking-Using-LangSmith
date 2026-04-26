@@ -39,7 +39,7 @@ This repository demonstrates the foundational concepts of building and tracking 
 
 ## 📂 Core Examples
 
-### 1. Basic LLM Call (`llm_basic_call.py`)
+### 1. Basic LLM Call (`1_llm_basic_call.py`)
 This script demonstrates the simplest way to interact with an LLM using LangChain. It sets up a basic prompt template and a chain to get a response from the `llama-3.3-70b-versatile` model.
 
 **Key Features:**
@@ -47,7 +47,7 @@ This script demonstrates the simplest way to interact with an LLM using LangChai
 - Integration with ChatGroq
 - Output Parsing with `StrOutputParser`
 
-### 2. Sequential Workflow (`sequential_workflow.py`)
+### 2. Sequential Workflow (`2_sequential_workflow.py`)
 This example shows how to chain multiple LLM calls together where the output of one step serves as the input to the next.
 
 **Key Features:**
@@ -60,7 +60,7 @@ This example shows how to chain multiple LLM calls together where the output of 
 To run an example, simply execute the Python script:
 
 ```bash
-python llm_basic_call.py
+python 1_llm_basic_call.py
 ```
 
 ---
