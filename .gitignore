@@ -1,0 +1,28 @@
+# Environment
+.env
+myvenv/
+venv/
+ENV/
+env/
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDEs
+.vscode/
+.idea/
+
+# Data
+*.pdf
+*.csv
+*.xlsx
+*.db
+*.sqlite
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
