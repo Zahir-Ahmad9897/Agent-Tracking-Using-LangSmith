@@ -156,12 +156,10 @@ LANGCHAIN_TRACING_V2=true
 LANGCHAIN_API_KEY=your_langsmith_api_key_here
 LANGCHAIN_PROJECT=Agent-Tracking-Using-LangSmith
 ```
-
-> ⚠️ **Never commit your `.env` file.** It is already excluded via `.gitignore`.
-
+ 
 ---
 
-## 📂 Module Reference
+##  Module Reference
 
 | # | File | Concept | LangSmith Project | Run |
 |---|---|---|---|---|
