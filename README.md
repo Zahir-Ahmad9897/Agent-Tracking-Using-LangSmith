@@ -260,33 +260,5 @@ All pipelines ship LangSmith traces out of the box. Once configured, visit your 
 > 💡 **Tip:** Use the `metadata` and `tags` fields in your chains to filter traces by environment (`dev`, `prod`) or experiment version.
 
 ---
-
-## 🛡 Best Practices
-
-| Practice | Implementation |
-|---|---|
-| **Credential Security** | All secrets in `.env`, excluded from version control via `.gitignore` |
-| **Observability-First** | `LANGCHAIN_TRACING_V2=true` enabled globally; per-step `tags` and `metadata` added on complex chains |
-| **Modular Design** | Each pipeline stage is a separate, testable function with a single responsibility |
-| **Error Resilience** | `try-except` blocks around all external API calls with informative error messages |
-| **Reproducibility** | `temperature=0.1–0.2` set on all inference calls for consistent outputs |
-| **Semantic Chunking** | `chunk_overlap` used across all RAG modules to prevent context loss at boundaries |
-
----
-
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome!
-
-1. Fork the repository
-2. Create your feature branch: `git checkout -b feature/your-feature-name`
-3. Commit your changes: `git commit -m 'feat: add your feature'`
-4. Push to the branch: `git push origin feature/your-feature-name`
-5. Open a Pull Request
-
----
-
-<p align="center">
-  Built with Senior-Level Engineering Standards 🚀<br/>
-  <a href="https://github.com/Zahir-Ahmad9897/Agent-Tracking-Using-LangSmith">⭐ Star this repo if it helped you!</a>
-</p>
+ 
+ 
