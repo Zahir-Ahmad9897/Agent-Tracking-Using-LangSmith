@@ -23,8 +23,7 @@
 - [Getting Started](#-getting-started)
 - [Module Reference](#-module-reference)
 - [LangSmith Observability](#-langsmith-observability)
-- [Best Practices](#-best-practices)
-- [Contributing](#-contributing)
+ 
 
 ---
 
