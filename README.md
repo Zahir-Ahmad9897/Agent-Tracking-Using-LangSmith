@@ -25,6 +25,7 @@
 - [LangSmith Observability](#-langsmith-observability)
 - [Best Practices](#-best-practices)
 - [Contributing](#-contributing)
+- [License](#-license)
 
 ---
 
@@ -38,8 +39,10 @@ This repository is a hands-on masterclass structured as **progressive modules**.
 | **LLM Provider** | Groq Cloud (Llama-3.3-70B-Versatile) |
 | **Orchestration** | LangChain / LCEL |
 | **Observability** | LangSmith |
-| **Vector Store** | FAISS |
+| **Vector Store** | FAISS (in-memory + disk-persisted) |
 | **Embeddings** | HuggingFace (`all-MiniLM-L6-v2`) |
+| **Retrieval Strategy** | Similarity Search & MMR (Maximal Marginal Relevance) |
+| **Caching** | SHA-256 content-addressed FAISS index persistence |
 
 ---
 
@@ -109,6 +112,57 @@ graph TD
     style H fill:#FFF3E0,stroke:#FF9800,stroke-width:2px
 ```
 
+### Pipeline 5 — MMR Vector Store RAG
+
+> Upgrades retrieval to **Maximal Marginal Relevance (MMR)** for diverse, non-redundant context chunks.
+
+```mermaid
+graph TD
+    A([User Question]) --> B[orchestrate_index_build]
+    B --> B1[execute_pdf_load]
+    B --> B2[segment_into_chunks]
+    B --> B3[initialize_faiss_index]
+    B3 --> C[(FAISS Index)]
+    C --> D["MMR Retriever\n(k=5, diversity-aware)"]
+    D --> E[RunnableParallel]
+    E --> F[Context Combiner]
+    E --> G[RunnablePassthrough]
+    F & G --> H[ChatPromptTemplate]
+    H --> I{{Groq LLM}}
+    I --> J([Final Answer])
+
+    style C fill:#E3F2FD,stroke:#1565C0,stroke-width:2px
+    style D fill:#EDE7F6,stroke:#4527A0,stroke-width:2px
+    style I fill:#FFF3E0,stroke:#FF9800,stroke-width:2px
+```
+
+### Pipeline 6 — Persistent Cached RAG
+
+> Introduces **SHA-256 content-addressed disk caching** so the FAISS index is rebuilt only when the source document changes.
+
+```mermaid
+graph TD
+    A([User Inquiry]) --> B[get_intelligent_index]
+    B --> C{Cache Hit?}
+    C -- Yes --> D[retrieve_cached_index]
+    C -- No --> E[build_and_persist_index]
+    E --> E1[internal_pdf_ingestion]
+    E --> E2[segment_source_material]
+    E --> E3[generate_vector_embeddings]
+    E3 --> F[(Disk-Persisted FAISS\n.persistent_indices/)]
+    D & F --> G[Retriever k=5]
+    G --> H[RunnableParallel]
+    H --> I[format_context_string]
+    H --> J[RunnablePassthrough]
+    I & J --> K[ChatPromptTemplate]
+    K --> L{{Groq LLM}}
+    L --> M([Extracted Intelligence])
+
+    style C fill:#FFF9C4,stroke:#F9A825,stroke-width:2px
+    style F fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px
+    style L fill:#FFF3E0,stroke:#FF9800,stroke-width:2px
+```
+
 ---
 
 ## 🚀 Getting Started
@@ -170,6 +224,8 @@ LANGCHAIN_PROJECT=Agent-Tracking-Using-LangSmith
 | 2 | `2_sequential_workflow.py` | Multi-step LCEL chain | `Sequential-Intelligence-Pipeline` | `python 2_sequential_workflow.py` |
 | 3 | `3_rag_basic.py` | Basic RAG with FAISS | `Knowledge-Retrieval-Core` | `python 3_rag_basic.py` |
 | 4 | `4_rag_conversational.py` | Traced modular RAG | `Advanced-Document-QA-System` | `python 4_rag_conversational.py` |
+| 5 | `5_rag_vector_store.py` | MMR-powered vector store RAG | `Deep-Retrieval-Architecture` | `python 5_rag_vector_store.py` |
+| 6 | `6_rag_advanced.py` | Persistent cached RAG system | `Persistent-Knowledge-Hub` | `python 6_rag_advanced.py` |
 
 ---
 
@@ -249,6 +305,53 @@ python 4_rag_conversational.py
 
 ---
 
+### Module 5 — `5_rag_vector_store.py`
+
+**Concept:** MMR-Powered Deep Retrieval Architecture
+
+Upgrades the retrieval layer by swapping standard similarity search for **Maximal Marginal Relevance (MMR)**. MMR balances relevance with diversity, preventing redundant context chunks from flooding the prompt. Each pipeline stage is individually `@traceable` for deep LangSmith introspection.
+
+| Attribute | Detail |
+|---|---|
+| **Pattern** | `orchestrate_index_build` → MMR Retriever → `RunnableParallel` → LLM |
+| **Key APIs** | `FAISS.as_retriever(search_type="mmr")`, `RunnableParallel`, `RunnablePassthrough`, `RunnableLambda` |
+| **Retrieval** | MMR with `k=5` — retrieves 5 maximally diverse chunks |
+| **Tracing** | Per-stage `@traceable` decorators; run tagged `Production-Grade` + `RAG` with `metadata` dict |
+| **Best Practice** | `chunk_overlap=200` with `chunk_size=1100` preserves cross-boundary sentence context |
+| **LangSmith Project** | `Deep-Retrieval-Architecture` |
+| **Interactive** | Prompts user for a question at runtime via `input()` |
+
+```bash
+python 5_rag_vector_store.py
+```
+
+---
+
+### Module 6 — `6_rag_advanced.py`
+
+**Concept:** Persistent Knowledge Hub — SHA-256 Content-Addressed FAISS Caching
+
+The most production-hardened module in the series. Introduces **deterministic, content-addressed disk caching** of FAISS indices. The cache key is a SHA-256 hash of the document fingerprint (file hash + size + mtime), chunking parameters, and embedding model — so the index is **never rebuilt unless the source actually changes**, dramatically reducing cold-start latency in production deployments.
+
+| Attribute | Detail |
+|---|---|
+| **Pattern** | Hash-gated index loading → `RunnableParallel` → LLM |
+| **Key APIs** | `hashlib.sha256`, `FAISS.save_local` / `FAISS.load_local`, `@traceable(tags=["caching"])` |
+| **Cache Storage** | `.persistent_indices/<sha256_key>/` (auto-created on first run) |
+| **Cache Manifest** | `index_manifest.json` written per index — records source file path & build config |
+| **Tracing** | `retrieve_cached_index` and `build_and_persist_index` tagged `["caching"]` in LangSmith |
+| **Best Practice** | `force_refresh=False` default; pass `force_refresh=True` to bypass cache on demand |
+| **LangSmith Project** | `Persistent-Knowledge-Hub` |
+| **Interactive** | Prompts user for an inquiry at runtime; prints `Optimized: Loading from cache` on cache hits |
+
+> ⚠️ **Note:** The `.persistent_indices/` directory is automatically created at runtime and should be added to `.gitignore` to avoid committing large binary FAISS index files.
+
+```bash
+python 6_rag_advanced.py
+```
+
+---
+
 ## 📈 LangSmith Observability
 
 All pipelines ship LangSmith traces out of the box. Once configured, visit your [LangSmith Dashboard](https://smith.langchain.com/) to monitor:
@@ -264,16 +367,18 @@ All pipelines ship LangSmith traces out of the box. Once configured, visit your 
 
 ---
 
-## 🛡 Best Practices
+## ✅ Best Practices
 
-| Practice | Implementation |
+| Practice | Applied In |
 |---|---|
-| **Credential Security** | All secrets in `.env`, excluded from version control via `.gitignore` |
-| **Observability-First** | `LANGCHAIN_TRACING_V2=true` enabled globally; per-step `tags` and `metadata` added on complex chains |
-| **Modular Design** | Each pipeline stage is a separate, testable function with a single responsibility |
-| **Error Resilience** | `try-except` blocks around all external API calls with informative error messages |
-| **Reproducibility** | `temperature=0.1–0.2` set on all inference calls for consistent outputs |
-| **Semantic Chunking** | `chunk_overlap` used across all RAG modules to prevent context loss at boundaries |
+| Secrets in `.env`, never hardcoded | All modules |
+| `@traceable` on every pipeline stage | Modules 3–6 |
+| LCEL `\|` operator for composable chains | Modules 1–6 |
+| `RunnableParallel` for concurrent retrieval | Modules 4–6 |
+| MMR retrieval for diverse context | Module 5 |
+| Content-addressed disk caching | Module 6 |
+| LangSmith `tags` + `metadata` for run filtering | Modules 2, 5, 6 |
+| `chunk_overlap` tuned to preserve sentence boundaries | Modules 3–6 |
 
 ---
 
@@ -282,14 +387,13 @@ All pipelines ship LangSmith traces out of the box. Once configured, visit your 
 Contributions, issues, and feature requests are welcome!
 
 1. Fork the repository
-2. Create your feature branch: `git checkout -b feature/your-feature-name`
-3. Commit your changes: `git commit -m 'feat: add your feature'`
+2. Create a feature branch: `git checkout -b feature/your-feature-name`
+3. Commit your changes with conventional commits: `git commit -m 'feat: add your feature'`
 4. Push to the branch: `git push origin feature/your-feature-name`
 5. Open a Pull Request
 
 ---
 
-<p align="center">
-  Built with Senior-Level Engineering Standards 🚀<br/>
-  <a href="https://github.com/Zahir-Ahmad9897/Agent-Tracking-Using-LangSmith">⭐ Star this repo if it helped you!</a>
-</p>
+## 📄 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
