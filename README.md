@@ -363,35 +363,3 @@ All pipelines ship LangSmith traces out of the box. Once configured, visit your 
 
 > 💡 **Tip:** Use the `metadata` and `tags` fields in your chains to filter traces by environment (`dev`, `prod`) or experiment version.
 
----
-
-## ✅ Best Practices
-
-| Practice | Applied In |
-|---|---|
-| Secrets in `.env`, never hardcoded | All modules |
-| `@traceable` on every pipeline stage | Modules 3–6 |
-| LCEL `\|` operator for composable chains | Modules 1–6 |
-| `RunnableParallel` for concurrent retrieval | Modules 4–6 |
-| MMR retrieval for diverse context | Module 5 |
-| Content-addressed disk caching | Module 6 |
-| LangSmith `tags` + `metadata` for run filtering | Modules 2, 5, 6 |
-| `chunk_overlap` tuned to preserve sentence boundaries | Modules 3–6 |
-
----
-
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome!
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/your-feature-name`
-3. Commit your changes with conventional commits: `git commit -m 'feat: add your feature'`
-4. Push to the branch: `git push origin feature/your-feature-name`
-5. Open a Pull Request
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
