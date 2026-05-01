@@ -5,12 +5,22 @@
   <a href="https://python.langchain.com/"><img src="https://img.shields.io/badge/LangChain-Framework-1C3C3C?style=for-the-badge&logo=chainlink&logoColor=white" alt="LangChain"></a>
   <a href="https://groq.com/"><img src="https://img.shields.io/badge/Groq-Inference-F55036?style=for-the-badge&logo=groq&logoColor=white" alt="Groq"></a>
   <a href="https://smith.langchain.com/"><img src="https://img.shields.io/badge/LangSmith-Observability-000000?style=for-the-badge&logo=langchain&logoColor=white" alt="LangSmith"></a>
+<<<<<<< HEAD
    
 </p>
 
 <p align="center">
   A progressive, production-grade building <strong>traceable</strong>, <strong>scalable</strong>, and <strong>observable</strong> LLM pipelines using <strong>LangChain</strong>, <strong>Groq</strong>, and <strong>LangSmith</strong>.<br/>
   Each script is a standalone module that teaches a core concept — from a single LLM call all the way to full RAG systems.
+=======
+  <a href="https://www.langchain.com/langgraph"><img src="https://img.shields.io/badge/LangGraph-Workflows-4B8BBE?style=for-the-badge&logo=python&logoColor=white" alt="LangGraph"></a>
+  <a href="https://github.com/Zahir-Ahmad9897/Agent-Tracking-Using-LangSmith/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License"></a>
+</p>
+
+<p align="center">
+  A progressive, production-grade masterclass in building <strong>traceable</strong>, <strong>scalable</strong>, and <strong>observable</strong> LLM pipelines using <strong>LangChain</strong>, <strong>LangGraph</strong>, <strong>Groq</strong>, and <strong>LangSmith</strong>.<br/>
+  Each script is a standalone module that teaches a core concept — from a single LLM call all the way to autonomous agents and multi-node stateful graph workflows.
+>>>>>>> c364f63 (docs: Comprehensive README update with modules 7 and 8 documentation)
 </p>
 
 ---
@@ -29,18 +39,24 @@
 
 ## 🔍 Overview
 
-This repository is a hands-on masterclass structured as **progressive modules**. Each module builds on the previous one, introducing new LangChain primitives, design patterns, and LangSmith tracing capabilities. By the end, you will have a solid foundation for building production-ready, fully observable AI systems.
+<<<<<<< HEAD
+This repository is a hands-on master project structured as **progressive modules**. Each module builds on the previous one, introducing new LangChain primitives, design patterns, and LangSmith tracing capabilities. By the end, you will have a solid foundation for building production-ready, fully observable AI systems.
+=======
+This repository is a hands-on masterclass structured as **8 progressive modules**. Each module builds on the previous one, introducing new LangChain primitives, design patterns, and LangSmith tracing capabilities. By the end, you will have a solid foundation for building production-ready, fully observable AI systems — from simple LLM calls to autonomous ReAct agents and parallel LangGraph audit workflows.
+>>>>>>> c364f63 (docs: Comprehensive README update with modules 7 and 8 documentation)
 
 | Aspect | Detail |
 |---|---|
 | **Language** | Python 3.9+ |
 | **LLM Provider** | Groq Cloud (Llama-3.3-70B-Versatile) |
-| **Orchestration** | LangChain / LCEL |
+| **Orchestration** | LangChain / LCEL / LangGraph |
 | **Observability** | LangSmith |
 | **Vector Store** | FAISS (in-memory + disk-persisted) |
 | **Embeddings** | HuggingFace (`all-MiniLM-L6-v2`) |
 | **Retrieval Strategy** | Similarity Search & MMR (Maximal Marginal Relevance) |
 | **Caching** | SHA-256 content-addressed FAISS index persistence |
+| **Agent Framework** | ReAct pattern via `create_react_agent` + `AgentExecutor` |
+| **Graph Workflows** | Parallel fan-out / fan-in via `StateGraph` (LangGraph) |
 
 ---
 
@@ -48,11 +64,14 @@ This repository is a hands-on masterclass structured as **progressive modules**.
 
 | Tool | Role | Version |
 |---|---|---|
-| [LangChain](https://python.langchain.com/) | Pipeline orchestration & LCEL | `≥ 0.2` |
+| [LangChain](https://python.langchain.com/) | Pipeline orchestration & LCEL | `≥ 0.3` |
+| [LangGraph](https://www.langchain.com/langgraph) | Stateful multi-node graph workflows | `≥ 0.6` |
 | [Groq Cloud](https://groq.com/) | Ultra-fast LLM inference | API |
-| [LangSmith](https://smith.langchain.com/) | Tracing, debugging & monitoring | API |
+| [LangSmith](https://smith.langchain.com/) | Tracing, debugging & monitoring | `≥ 0.4` |
 | [FAISS](https://github.com/facebookresearch/faiss) | Vector similarity search | `faiss-cpu` |
 | [HuggingFace Hub](https://huggingface.co/) | Sentence embedding models | `all-MiniLM-L6-v2` |
+| [DuckDuckGo Search](https://pypi.org/project/duckduckgo-search/) | Live web search tool for agents | `≥ 8.1` |
+| [Pydantic](https://docs.pydantic.dev/) | Structured LLM output validation | `≥ 2.0` |
 | `python-dotenv` | Secure environment config | `≥ 1.0` |
 
 ---
@@ -161,6 +180,49 @@ graph TD
     style L fill:#FFF3E0,stroke:#FF9800,stroke-width:2px
 ```
 
+### Pipeline 7 — Autonomous ReAct Agent
+
+> A self-directing agent that reasons over tools in a Thought → Action → Observation loop.
+
+```mermaid
+graph TD
+    A([User Query]) --> B[AgentExecutor]
+    B --> C{{ReAct Reasoning Loop}}
+    C --> D{Tool Needed?}
+    D -- Web Search --> E[DuckDuckGoSearchRun]
+    D -- Weather API --> F[fetch_meteorological_info]
+    E & F --> G[Observation]
+    G --> C
+    D -- No --> H[Final Answer]
+    H --> I([Agent Output])
+
+    style C fill:#EDE7F6,stroke:#673AB7,stroke-width:2px
+    style E fill:#E3F2FD,stroke:#1565C0,stroke-width:2px
+    style F fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px
+```
+
+### Pipeline 8 — Parallel LangGraph Audit Workflow
+
+> Three specialist audit nodes run **in parallel** (fan-out), then merge (fan-in) into a single executive report.
+
+```mermaid
+graph TD
+    A([Content Input]) --> B[StateGraph: START]
+    B --> C[linguistics_audit]
+    B --> D[logic_audit]
+    B --> E[strategy_audit]
+    C --> F[report_generation]
+    D --> F
+    E --> F
+    F --> G[StateGraph: END]
+    G --> H([Executive Report + Score])
+
+    style C fill:#FCE4EC,stroke:#E91E63,stroke-width:2px
+    style D fill:#E8EAF6,stroke:#3F51B5,stroke-width:2px
+    style E fill:#E8F5E9,stroke:#4CAF50,stroke-width:2px
+    style F fill:#FFF3E0,stroke:#FF9800,stroke-width:2px
+```
+
 ---
 
 ## 🚀 Getting Started
@@ -170,6 +232,7 @@ graph TD
 - Python **3.9+**
 - A [Groq API key](https://console.groq.com/) (free tier available)
 - A [LangSmith API key](https://smith.langchain.com/) (free tier available)
+- A [Weatherstack API key](https://weatherstack.com/) (free tier — required for Module 7)
 
 ### 1. Clone the Repository
 
@@ -208,11 +271,16 @@ GROQ_API_KEY=your_groq_api_key_here
 LANGCHAIN_TRACING_V2=true
 LANGCHAIN_API_KEY=your_langsmith_api_key_here
 LANGCHAIN_PROJECT=Agent-Tracking-Using-LangSmith
+
+# Weather API (Module 7 only)
+WEATHERSTACK_API_KEY=your_weatherstack_api_key_here
 ```
- 
+
+> ⚠️ **Security Note:** Never commit your `.env` file. It is already included in `.gitignore`.
+
 ---
 
-##  Module Reference
+## 📦 Module Reference
 
 | # | File | Concept | LangSmith Project | Run |
 |---|---|---|---|---|
@@ -222,6 +290,8 @@ LANGCHAIN_PROJECT=Agent-Tracking-Using-LangSmith
 | 4 | `4_rag_conversational.py` | Traced modular RAG | `Advanced-Document-QA-System` | `python 4_rag_conversational.py` |
 | 5 | `5_rag_vector_store.py` | MMR-powered vector store RAG | `Deep-Retrieval-Architecture` | `python 5_rag_vector_store.py` |
 | 6 | `6_rag_advanced.py` | Persistent cached RAG system | `Persistent-Knowledge-Hub` | `python 6_rag_advanced.py` |
+| 7 | `7_langchain_agent.py` | Autonomous ReAct agent + tools | `Autonomous-Research-Agent` | `python 7_langchain_agent.py` |
+| 8 | `8_langgraph_workflow.py` | Parallel LangGraph audit workflow | `Deep-Content-Audit-Workflow` | `python 8_langgraph_workflow.py` |
 
 ---
 
@@ -253,7 +323,7 @@ Chains two LLM calls using the LCEL pipe operator (`|`). The first call drafts a
 | Attribute | Detail |
 |---|---|
 | **Pattern** | Chain-of-Thought via `RunnableSequence` |
-| **Key APIs** | LCEL `|` operator, `RunnablePassthrough`, LangSmith `tags` & `metadata` |
+| **Key APIs** | LCEL `\|` operator, `RunnablePassthrough`, LangSmith `tags` & `metadata` |
 | **Best Practice** | Each step is tagged independently for granular tracing in LangSmith |
 | **Tracing** | Per-step latency and token usage visible in LangSmith dashboard |
 
@@ -327,7 +397,7 @@ python 5_rag_vector_store.py
 
 **Concept:** Persistent Knowledge Hub — SHA-256 Content-Addressed FAISS Caching
 
-The most production-hardened module in the series. Introduces **deterministic, content-addressed disk caching** of FAISS indices. The cache key is a SHA-256 hash of the document fingerprint (file hash + size + mtime), chunking parameters, and embedding model — so the index is **never rebuilt unless the source actually changes**, dramatically reducing cold-start latency in production deployments.
+The most production-hardened RAG module in the series. Introduces **deterministic, content-addressed disk caching** of FAISS indices. The cache key is a SHA-256 hash of the document fingerprint (file hash + size + mtime), chunking parameters, and embedding model — so the index is **never rebuilt unless the source actually changes**, dramatically reducing cold-start latency in production deployments.
 
 | Attribute | Detail |
 |---|---|
@@ -348,6 +418,85 @@ python 6_rag_advanced.py
 
 ---
 
+### Module 7 — `7_langchain_agent.py`
+
+**Concept:** Autonomous ReAct Agent with Custom Tools
+
+Introduces **agentic reasoning** — the agent autonomously decides which tool to call, observes the result, and iterates until it produces a final answer. It uses the standard [ReAct (Reason + Act)](https://arxiv.org/abs/2210.03629) prompting framework pulled directly from LangChain Hub.
+
+| Attribute | Detail |
+|---|---|
+| **Pattern** | ReAct: Thought → Action → Observation → ... → Final Answer |
+| **Key APIs** | `create_react_agent`, `AgentExecutor`, `@tool`, `DuckDuckGoSearchRun`, `hub.pull` |
+| **Tools** | `DuckDuckGoSearchRun` (live web search) · `fetch_meteorological_info` (Weatherstack REST API) |
+| **Safety** | `max_iterations=4` caps runaway reasoning loops; `handle_parsing_errors=True` for resilience |
+| **Tracing** | Full agent reasoning trace (each Thought/Action/Observation) captured in LangSmith |
+| **LangSmith Project** | `Autonomous-Research-Agent` |
+| **Verbosity** | `verbose=True` prints the live reasoning chain to stdout |
+
+> 💡 **How it works:** Given the query *"Identify the home city of Albert Einstein and provide its current weather status"*, the agent searches the web for Einstein's birthplace, then calls the weather API for that city — without any hard-coded logic.
+
+```bash
+python 7_langchain_agent.py
+```
+
+**Example Reasoning Trace:**
+```
+Thought: I need to find Albert Einstein's home city, then get its weather.
+Action: duckduckgo_search
+Action Input: "Albert Einstein home city birthplace"
+Observation: Albert Einstein was born in Ulm, Germany...
+Thought: Now I need the current weather in Ulm.
+Action: fetch_meteorological_info
+Action Input: "Ulm"
+Observation: {"temperature": 18, "weather_descriptions": ["Partly cloudy"]}
+Final Answer: Albert Einstein's home city was Ulm, Germany. Current weather: 18°C, Partly cloudy.
+```
+
+---
+
+### Module 8 — `8_langgraph_workflow.py`
+
+**Concept:** Parallel Multi-Node Audit Workflow with LangGraph
+
+The most architecturally advanced module. Uses **LangGraph's `StateGraph`** to define a parallel fan-out / fan-in workflow: three specialist audit nodes execute **concurrently**, each scoring a piece of content from a different dimension. Their results are merged via LangGraph's `Annotated[List[int], operator.add]` state reducer, then synthesised into a single executive report.
+
+| Attribute | Detail |
+|---|---|
+| **Pattern** | Parallel Fan-out (`START → 3 nodes`) → Fan-in (`3 nodes → report_generation → END`) |
+| **Key APIs** | `StateGraph`, `TypedDict`, `Annotated` + `operator.add`, `BaseModel` + `with_structured_output` |
+| **State Schema** | `ContentAuditState` — typed dict with reducer-annotated score accumulator |
+| **Structured Output** | `QualityAssessment` (Pydantic model) enforces `audit_notes: str` + `numeric_rating: int (1-10)` |
+| **Audit Dimensions** | Linguistic quality · Logical coherence · Strategic depth |
+| **Score Aggregation** | `Annotated[List[int], operator.add]` automatically merges scores from parallel branches |
+| **Tracing** | Each node decorated with `@traceable(tags=["audit", "<dimension>"])`; run-level `tags` and `metadata` passed via `config=` |
+| **LangSmith Project** | `Deep-Content-Audit-Workflow` |
+| **Output** | Prints final score (average of 3 ratings) and full executive summary report |
+
+> 💡 **Key Design Decision:** Using `operator.add` as the state reducer for `aggregated_scores` is what enables safe concurrent writes from parallel nodes without race conditions — each node appends its score to the shared list, and LangGraph merges them deterministically.
+
+```bash
+python 8_langgraph_workflow.py
+```
+
+**Example Output:**
+```
+========================================
+       EXECUTIVE AUDIT REPORT
+========================================
+
+Final Quality Score: 7.33/10
+
+--- Summary ---
+
+The content demonstrates strong strategic vision regarding India's space ambitions...
+[full executive report]
+
+========================================
+```
+
+---
+
 ## 📈 LangSmith Observability
 
 All pipelines ship LangSmith traces out of the box. Once configured, visit your [LangSmith Dashboard](https://smith.langchain.com/) to monitor:
@@ -358,6 +507,19 @@ All pipelines ship LangSmith traces out of the box. Once configured, visit your 
 | **Token consumption** | Cost visibility per run and per stage |
 | **Input / output payloads** | Full prompt + response logged for debugging |
 | **Error traces** | Stack traces correlated to exact pipeline steps |
+| **Agent reasoning chains** | Full Thought/Action/Observation trace for Module 7 |
+| **Graph node execution** | Per-node timing and state deltas for Module 8 |
 
 > 💡 **Tip:** Use the `metadata` and `tags` fields in your chains to filter traces by environment (`dev`, `prod`) or experiment version.
 
+<<<<<<< HEAD
+=======
+---
+
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+>>>>>>> c364f63 (docs: Comprehensive README update with modules 7 and 8 documentation)
