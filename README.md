@@ -5,14 +5,6 @@
   <a href="https://python.langchain.com/"><img src="https://img.shields.io/badge/LangChain-Framework-1C3C3C?style=for-the-badge&logo=chainlink&logoColor=white" alt="LangChain"></a>
   <a href="https://groq.com/"><img src="https://img.shields.io/badge/Groq-Inference-F55036?style=for-the-badge&logo=groq&logoColor=white" alt="Groq"></a>
   <a href="https://smith.langchain.com/"><img src="https://img.shields.io/badge/LangSmith-Observability-000000?style=for-the-badge&logo=langchain&logoColor=white" alt="LangSmith"></a>
-<<<<<<< HEAD
-   
-</p>
-
-<p align="center">
-  A progressive, production-grade building <strong>traceable</strong>, <strong>scalable</strong>, and <strong>observable</strong> LLM pipelines using <strong>LangChain</strong>, <strong>Groq</strong>, and <strong>LangSmith</strong>.<br/>
-  Each script is a standalone module that teaches a core concept — from a single LLM call all the way to full RAG systems.
-=======
   <a href="https://www.langchain.com/langgraph"><img src="https://img.shields.io/badge/LangGraph-Workflows-4B8BBE?style=for-the-badge&logo=python&logoColor=white" alt="LangGraph"></a>
   <a href="https://github.com/Zahir-Ahmad9897/Agent-Tracking-Using-LangSmith/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License"></a>
 </p>
@@ -20,7 +12,6 @@
 <p align="center">
   A progressive, production-grade masterclass in building <strong>traceable</strong>, <strong>scalable</strong>, and <strong>observable</strong> LLM pipelines using <strong>LangChain</strong>, <strong>LangGraph</strong>, <strong>Groq</strong>, and <strong>LangSmith</strong>.<br/>
   Each script is a standalone module that teaches a core concept — from a single LLM call all the way to autonomous agents and multi-node stateful graph workflows.
->>>>>>> c364f63 (docs: Comprehensive README update with modules 7 and 8 documentation)
 </p>
 
 ---
@@ -33,17 +24,15 @@
 - [Getting Started](#-getting-started)
 - [Module Reference](#-module-reference)
 - [LangSmith Observability](#-langsmith-observability)
-
+- [Best Practices](#-best-practices)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ---
 
 ## 🔍 Overview
 
-<<<<<<< HEAD
-This repository is a hands-on master project structured as **progressive modules**. Each module builds on the previous one, introducing new LangChain primitives, design patterns, and LangSmith tracing capabilities. By the end, you will have a solid foundation for building production-ready, fully observable AI systems.
-=======
 This repository is a hands-on masterclass structured as **8 progressive modules**. Each module builds on the previous one, introducing new LangChain primitives, design patterns, and LangSmith tracing capabilities. By the end, you will have a solid foundation for building production-ready, fully observable AI systems — from simple LLM calls to autonomous ReAct agents and parallel LangGraph audit workflows.
->>>>>>> c364f63 (docs: Comprehensive README update with modules 7 and 8 documentation)
 
 | Aspect | Detail |
 |---|---|
@@ -512,14 +501,40 @@ All pipelines ship LangSmith traces out of the box. Once configured, visit your 
 
 > 💡 **Tip:** Use the `metadata` and `tags` fields in your chains to filter traces by environment (`dev`, `prod`) or experiment version.
 
-<<<<<<< HEAD
-=======
 ---
 
+## ✅ Best Practices
+
+| Practice | Applied In |
+|---|---|
+| Secrets in `.env`, never hardcoded | All modules |
+| `@traceable` on every pipeline stage | Modules 3–8 |
+| LCEL `\|` operator for composable chains | Modules 1–6 |
+| `RunnableParallel` for concurrent retrieval | Modules 4–6 |
+| MMR retrieval for diverse context | Module 5 |
+| Content-addressed disk caching | Module 6 |
+| `max_iterations` cap on agent loops | Module 7 |
+| `handle_parsing_errors=True` for agent resilience | Module 7 |
+| `TypedDict` + `Annotated` state schema in LangGraph | Module 8 |
+| Pydantic structured output for deterministic LLM responses | Module 8 |
+| Parallel graph nodes with safe state reducers (`operator.add`) | Module 8 |
+| LangSmith `tags` + `metadata` for run filtering | Modules 2, 5, 6, 7, 8 |
+| `chunk_overlap` tuned to preserve sentence boundaries | Modules 3–6 |
+
+---
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome!
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/your-feature-name`
+3. Commit your changes with conventional commits: `git commit -m 'feat: add your feature'`
+4. Push to the branch: `git push origin feature/your-feature-name`
+5. Open a Pull Request
 
 ---
 
 ## 📄 License
 
 This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
->>>>>>> c364f63 (docs: Comprehensive README update with modules 7 and 8 documentation)
