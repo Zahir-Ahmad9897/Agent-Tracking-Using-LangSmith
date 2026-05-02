@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  A progressive, production-grade masterclass in building <strong>traceable</strong>, <strong>scalable</strong>, and <strong>observable</strong> LLM pipelines using <strong>LangChain</strong>, <strong>LangGraph</strong>, <strong>Groq</strong>, and <strong>LangSmith</strong>.<br/>
+  A progressive, production-grade building <strong>traceable</strong>, <strong>scalable</strong>, and <strong>observable</strong> LLM pipelines using <strong>LangChain</strong>, <strong>LangGraph</strong>, <strong>Groq</strong>, and <strong>LangSmith</strong>.<br/>
   Each script is a standalone module that teaches a core concept — from a single LLM call all the way to autonomous agents and multi-node stateful graph workflows.
 </p>
 
@@ -24,15 +24,12 @@
 - [Getting Started](#-getting-started)
 - [Module Reference](#-module-reference)
 - [LangSmith Observability](#-langsmith-observability)
-- [Best Practices](#-best-practices)
-- [Contributing](#-contributing)
-- [License](#-license)
 
 ---
 
 ## 🔍 Overview
 
-This repository is a hands-on masterclass structured as **8 progressive modules**. Each module builds on the previous one, introducing new LangChain primitives, design patterns, and LangSmith tracing capabilities. By the end, you will have a solid foundation for building production-ready, fully observable AI systems — from simple LLM calls to autonomous ReAct agents and parallel LangGraph audit workflows.
+This repository is structured as **8 progressive modules**. Each module builds on the previous one, introducing new LangChain primitives, design patterns, and LangSmith tracing capabilities. By the end, you will have a solid foundation for building production-ready, fully observable AI systems — from simple LLM calls to autonomous ReAct agents and parallel LangGraph audit workflows.
 
 | Aspect | Detail |
 |---|---|
@@ -265,8 +262,7 @@ LANGCHAIN_PROJECT=Agent-Tracking-Using-LangSmith
 WEATHERSTACK_API_KEY=your_weatherstack_api_key_here
 ```
 
-> ⚠️ **Security Note:** Never commit your `.env` file. It is already included in `.gitignore`.
-
+ 
 ---
 
 ## 📦 Module Reference
@@ -364,7 +360,7 @@ python 4_rag_conversational.py
 
 **Concept:** MMR-Powered Deep Retrieval Architecture
 
-Upgrades the retrieval layer by swapping standard similarity search for **Maximal Marginal Relevance (MMR)**. MMR balances relevance with diversity, preventing redundant context chunks from flooding the prompt. Each pipeline stage is individually `@traceable` for deep LangSmith introspection.
+
 
 | Attribute | Detail |
 |---|---|
@@ -385,8 +381,6 @@ python 5_rag_vector_store.py
 ### Module 6 — `6_rag_advanced.py`
 
 **Concept:** Persistent Knowledge Hub — SHA-256 Content-Addressed FAISS Caching
-
-The most production-hardened RAG module in the series. Introduces **deterministic, content-addressed disk caching** of FAISS indices. The cache key is a SHA-256 hash of the document fingerprint (file hash + size + mtime), chunking parameters, and embedding model — so the index is **never rebuilt unless the source actually changes**, dramatically reducing cold-start latency in production deployments.
 
 | Attribute | Detail |
 |---|---|
@@ -411,7 +405,6 @@ python 6_rag_advanced.py
 
 **Concept:** Autonomous ReAct Agent with Custom Tools
 
-Introduces **agentic reasoning** — the agent autonomously decides which tool to call, observes the result, and iterates until it produces a final answer. It uses the standard [ReAct (Reason + Act)](https://arxiv.org/abs/2210.03629) prompting framework pulled directly from LangChain Hub.
 
 | Attribute | Detail |
 |---|---|
@@ -448,7 +441,6 @@ Final Answer: Albert Einstein's home city was Ulm, Germany. Current weather: 18�
 
 **Concept:** Parallel Multi-Node Audit Workflow with LangGraph
 
-The most architecturally advanced module. Uses **LangGraph's `StateGraph`** to define a parallel fan-out / fan-in workflow: three specialist audit nodes execute **concurrently**, each scoring a piece of content from a different dimension. Their results are merged via LangGraph's `Annotated[List[int], operator.add]` state reducer, then synthesised into a single executive report.
 
 | Attribute | Detail |
 |---|---|
@@ -502,39 +494,3 @@ All pipelines ship LangSmith traces out of the box. Once configured, visit your 
 > 💡 **Tip:** Use the `metadata` and `tags` fields in your chains to filter traces by environment (`dev`, `prod`) or experiment version.
 
 ---
-
-## ✅ Best Practices
-
-| Practice | Applied In |
-|---|---|
-| Secrets in `.env`, never hardcoded | All modules |
-| `@traceable` on every pipeline stage | Modules 3–8 |
-| LCEL `\|` operator for composable chains | Modules 1–6 |
-| `RunnableParallel` for concurrent retrieval | Modules 4–6 |
-| MMR retrieval for diverse context | Module 5 |
-| Content-addressed disk caching | Module 6 |
-| `max_iterations` cap on agent loops | Module 7 |
-| `handle_parsing_errors=True` for agent resilience | Module 7 |
-| `TypedDict` + `Annotated` state schema in LangGraph | Module 8 |
-| Pydantic structured output for deterministic LLM responses | Module 8 |
-| Parallel graph nodes with safe state reducers (`operator.add`) | Module 8 |
-| LangSmith `tags` + `metadata` for run filtering | Modules 2, 5, 6, 7, 8 |
-| `chunk_overlap` tuned to preserve sentence boundaries | Modules 3–6 |
-
----
-
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome!
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/your-feature-name`
-3. Commit your changes with conventional commits: `git commit -m 'feat: add your feature'`
-4. Push to the branch: `git push origin feature/your-feature-name`
-5. Open a Pull Request
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
